@@ -1,0 +1,313 @@
+input[type="text"] {
+    -webkit-user-select: text;
+}
+input[type="number"] {
+    -webkit-user-select: text;
+}
+textarea {
+    -webkit-user-select: text;
+}
+input[type="checkbox"] {
+    -webkit-touch-callout: none;
+}
+
+body{
+	 perspective:500px;
+    -webkit-perspective:500px;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+   /*  background-image: url("../img/Fondo.png");*/
+
+}
+#container{
+	position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    -webkit-transform: translate3d(0%, 0, -1px);
+    transform: translate3d(0%, 0, -1px);
+    -webkit-transition-duration: 0.25s;
+    transition-duration: 0.25s;
+    background-color: #353;
+    background-size:100% 100%;
+}
+
+.view{
+	position: absolute;
+	overflow: hidden;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-transform: translate3d(0%, 0, 1px);
+    transform: translate3d(0%, 0, 1px);
+    -webkit-transition-duration: 0.25s;
+    transition-duration: 0.25s;
+   
+}
+
+.view.right{
+	-webkit-transform: translate3d(111%, 0, 1px);
+    transform: translate3d(111%, 0, 1px);
+    -webkit-transition-duration: 0.25s;
+    transition-duration: 0.25s;
+}
+
+.view.left{
+	-webkit-transform: translate3d(-100%, 0, 1px);
+    transform: translate3d(-100%, 0, 1px);
+    -webkit-transition-duration: 0.25s;
+    transition-duration: 0.25s;
+}
+
+.home{
+	position: absolute;
+	
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-transform: translate3d(0%, 0, 1px);
+    transform: translate3d(0%, 0, 1px);
+    -webkit-transition-duration: 0.25s;
+    transition-duration: 0.25s;
+ 
+}
+
+.home.right{
+	-webkit-transform: translate3d(111%, 0, 1px);
+    transform: translate3d(111%, 0, 1px);
+    -webkit-transition-duration: 0.25s;
+    transition-duration: 0.25s;
+}
+
+.home.left{
+	-webkit-transform: translate3d(-100%, 0, 1px);
+    transform: translate3d(-100%, 0, 1px);
+    -webkit-transition-duration: 0.25s;
+    transition-duration: 0.25s;
+}
+.tabs{
+	height: 10%;
+	width: 100%;
+	position: relative;
+	background-color: #6a6;
+
+}
+
+.tab{
+	width: 32%;
+	position: relative;
+	background-color: #464;
+	float: left;
+	height: 100%;
+	margin-top: 0;
+	font-size: 30px;
+	text-align: center;
+	margin-left: 0.5%;
+	margin-right: 0.5%;
+	color: white;
+	font-weight: bold;
+}
+
+.tab.selected {
+	color: orange;
+	background-color: #353;
+	
+}
+
+.factionIcon{
+	margin:2%;
+	width: 16%;
+}
+.unitSelector{
+	margin: 2%;
+	width: 12%;
+	float: left;
+}
+.unitView{
+	width: 100%;
+	padding: 5px;
+	height: 25px;
+	background: white;
+	border-top: 1px solid black;
+	float: left;
+	position: relative;
+	white-space: nowrap;
+}
+.grupo{
+	position: absolute;
+	padding-top: 50px;
+	width: 100%;
+	height: 90%;
+	-webkit-transform: translate3d(0%, 0, -1px);
+    transform: translate3d(0%, 0, -1px);
+    -webkit-transition-duration: 0.15s;
+    transition-duration: 0.15s;
+
+}
+.grupo.left{
+	 -webkit-transform: translate3d(-100%, 0, -1px);
+    transform: translate3d(-100%, 0, -1px);
+  
+	
+}
+.grupo.right{ 
+	-webkit-transform: translate3d(100%, 0, -1px);
+    transform: translate3d(100%, 0, -1px);
+  
+}
+
+
+
+.unitName{
+	white-space: nowrap;
+	font-size: 15px;
+	margin-left: 5px;
+	width:43%;
+	position: relative;
+	top:3px;
+	left:0px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	float:left;
+	
+}
+
+.actionSpace{
+	width: 45%;
+	height:  25px;
+	float: right;
+	padding-right: 3px;
+	position: relative;
+
+}
+.unitIcon{
+	float:left;
+	width: 25px;
+}
+.unitIconSelector{
+	width: 100%;
+}
+.espacio{
+	width: 100%;
+	height: 80%;
+}
+
+.log{
+	width: 100%;
+	height: 30px;
+	position: fixed;
+	bottom: 0px;
+	font-size: 28px;
+	background-color: white;
+	box-shadow: inset 0 0 5px 1px blue;
+	text-align: center;	
+}
+.groupView{
+	width: 100%;
+	position: relative;
+	height: 100%;
+	background-color: #353;
+}
+
+.buttonAdd{
+	position: absolute;
+	top: -45px;
+	right: 5px;
+	width: 40px;
+	height: 30px;
+	border-radius: 10px;
+	font-size: 20px;
+	text-align: center;
+	padding-top: 10px;
+	font-style: bold;
+	color: black;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#bfd255), color-stop(50%,#8eb92a), color-stop(51%,#72aa00), color-stop(100%,#9ecb2d)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #bfd255 0%,#8eb92a 50%,#72aa00 51%,#9ecb2d 100%); /* Chrome10+,Safari5.1+ */
+background: linear-gradient(to bottom, #bfd255 0%,#8eb92a 50%,#72aa00 51%,#9ecb2d 100%); /* W3C */
+}
+.buttonAdd.locked{
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#68702e), color-stop(50%,#526d19), color-stop(52%,#385e00), color-stop(100%,#3e5b15)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #68702e 0%,#526d19 50%,#385e00 52%,#3e5b15 100%); /* Chrome10+,Safari5.1+ */
+	background: linear-gradient(to bottom, #68702e 0%,#526d19 50%,#385e00 52%,#3e5b15 100%); /* W3C */
+}
+
+.buttonLock{
+		position: absolute;
+	top: -45px;
+	right: 55px;
+	width: 40px;
+	height: 30px;
+	border-radius: 10px;
+	font-size: 20px;
+	text-align: center;
+	padding-top: 10px;
+font-style: bold;
+color: black;
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#feffff), color-stop(35%,#ddf1f9), color-stop(100%,#a0d8ef)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #feffff 0%,#ddf1f9 35%,#a0d8ef 100%); /* Chrome10+,Safari5.1+ */
+background: linear-gradient(to bottom, #feffff 0%,#ddf1f9 35%,#a0d8ef 100%); /* W3C */
+ }
+.buttonLock.locked{
+	color: white;
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4c4c4c), color-stop(26%,#000000), color-stop(52%,#000000), color-stop(60%,#111111), color-stop(76%,#2b2b2b), color-stop(91%,#1c1c1c), color-stop(100%,#131313)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #4c4c4c 0%,#000000 26%,#000000 52%,#111111 60%,#2b2b2b 76%,#1c1c1c 91%,#131313 100%); /* Chrome10+,Safari5.1+ */
+background: linear-gradient(to bottom, #4c4c4c 0%,#000000 26%,#000000 52%,#111111 60%,#2b2b2b 76%,#1c1c1c 91%,#131313 100%); /* W3C */
+}
+
+.buttonStart{
+	position: absolute;
+	top: -45px;
+	right: 155px;
+	width: 80px;
+	height: 30px;
+	border-radius: 10px;
+	font-size: 20px;
+	text-align: center;
+	padding-top: 10px;
+	font-style: bold;
+	color: black;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#feffff), color-stop(35%,#ddf1f9), color-stop(100%,#a0d8ef)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #feffff 0%,#ddf1f9 35%,#a0d8ef 100%); /* Chrome10+,Safari5.1+ */
+	background: linear-gradient(to bottom, #feffff 0%,#ddf1f9 35%,#a0d8ef 100%); /* W3C */
+ 
+}
+
+.button{
+	float: right;
+	position: relative;
+	height: 30px;
+	width: 30px;
+	top:-3.5px;
+	border:1px solid black;
+	text-align: center;
+	margin-right:4px; 
+	border-radius: 10px;
+}
+
+
+.button.regular{
+	border:0px solid black;
+	background:  url(../img/ordenes.png) 0 0 no-repeat;
+}
+
+
+.button.irregular{
+	border:0px solid black;
+	background:url(../img/ordenes.png) 0 -30px no-repeat;
+}
+
+.button.impetuoso{
+	border:0px solid black;
+	background:url(../img/ordenes.png) 0 -60px no-repeat;
+}
+
+.button.frenesi{
+	border:0px solid black;
+	background:url(../img/ordenes.png) 0 -90px no-repeat;
+}
+
+.button.impetuosoEXT{
+	border:0px solid black;
+	background:url(../img/ordenes.png) 0 -120px no-repeat;
+}
