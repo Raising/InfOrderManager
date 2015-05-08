@@ -148,7 +148,6 @@ OCM.Group = function(params){
 	this.calcularOrdenes = function(){
 		group.orders = {regular:0,irregular:0,impetuosa:0};
 		for (var i in group.unitList){
-			if (group.unitList[i].ordenes[0] == 1){
 				group.orders.regular += 1;
 			}
 			if (group.unitList[i].ordenes[1] == 1){
