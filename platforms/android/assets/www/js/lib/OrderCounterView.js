@@ -71,7 +71,11 @@ OCV.unitView = function(model){
 	$("<div class='button impetuoso'></div>"),
 	$("<div class='button teniente'> </div>")];
 
-
+	this.unitIcon.on("tap",function(){
+		console.log("hola");
+		view.pop = new OCV.popUp({body:"hola"});
+		view.html.append(view.pop.getView());
+	});
 
 	this.html
 		.append(this.unitIcon)
@@ -81,6 +85,7 @@ OCV.unitView = function(model){
 		.append(this.removeUnit);
 
 	this.unitDisable.on("tap",function(){
+		console.log("toggledisabled");
 		if (model.toggleDisable() === "disabled"){
 			view.html.addClass("disabled");
 		}else{
@@ -126,6 +131,7 @@ OCV.groupView = function(model){
 	this.addButton = $("<div class= 'buttonAdd'> + </div>");
 	this.lockList = $("<div class= 'buttonLock'> L </div>");
 	this.startGame = $("<div class= 'buttonStart'>Iniciar</div>");
+	this.nuevoTurno = $("<div class= 'buttonStart'>Turno</div>");
 
 	this.html
 		.append(this.addButton)
@@ -136,12 +142,22 @@ OCV.groupView = function(model){
 		model.selectUnit();
 	});
 
+
+
 	this.startGame.on("tap",function() {
 		var empezar = confirm("¿Seguro que desea comenzar la partida con estas unidades?");
 		if ( empezar == true){
 			GLOBALS.startGame();
 		}
 	});
+
+	this.nuevoTurno.on("tap",function(){
+		var turno = confirm("¿Seguro desea cambiar de turno?");
+		if ( turno == true){
+			GLOBALS.startGame();
+		}
+	});
+
 
 	this.lockList.on("tap",function(){
 		var estado = model.lockList();
@@ -159,10 +175,15 @@ OCV.groupView = function(model){
 	this.refresh = function(){
 		view.html.empty();
 		if (GLOBALS.gameStatus === "load"){
-			view.html.append(this.addButton)
-		.append(this.lockList).append(this.startGame);
+			view.html
+			.append(this.addButton)
+			.append(this.lockList)
+			.append(this.startGame);
 		}
-		
+		else{
+			view.html
+			.append(this.nuevoTurno);
+		}
 		for (var i in model.unitList){
 			model.unitList[i].view.refreshActions();
 			view.html.append(model.unitList[i].getView());
@@ -175,6 +196,28 @@ OCV.groupView = function(model){
 	}
 
 
+}
+
+OCV.groupHeadView = function(model){
+	var view = this;
+	this.html = $("<div class = 'groupHeadView'></div>");
+	this.orders = {regular:$("<div class='buttonhead regular'><div>"),
+	irregular:$("<div class='buttonhead irregular'> </div>"),
+	impetuosa:$("<div class='buttonhead impetuoso'></div>")};
+	
+	for (var i in view.orders){
+		view.html.append(view.orders[i]);
+	}
+	
+	this.getView = function(){
+		return view.html;
+	}
+
+	this.refresh = function(){
+		for(var i in model.orders){
+			view.orders[i].empty().append(model.orders[i]);
+		}
+	}
 }
 
 OCV.factionView = function(model){
@@ -217,3 +260,48 @@ OCV.unitSelector = function(params){
 	}
 }
 
+
+
+OCV.popUp = function (params){
+	var pop = this;
+	$("body > .total").remove();
+	this.html = $("<div class='popup'></div>");
+	this.body = $("<div class='popupBody'></div>");
+	this.closeIcon = $("<div class='popupCloseIcon'>X</div>");
+
+	this.hideBack = $("<div class='total traslucido'></div>");
+
+	
+	this.body.append(params.body);
+
+	this.html
+			.append(this.body)
+			.append(this.closeIcon);
+	
+	this.hideBack.append(this.html);
+	
+	
+
+
+	//$("body").append(this.hideBack);
+	/*setTimeout(function() {
+		$("div").on("tap",function(){
+			console.log(this.innerHTML);
+		pop.body.append("");
+		return false;
+		//$("body > .total").remove();
+	});
+	}, 500);
+	
+*/
+
+	this.closeIcon.on("tap",function(){
+		pop.body.append("tap en closeicon");
+		pop.html.remove();
+		
+	});
+
+	this.getView = function(){
+		return pop.html;
+	}
+}

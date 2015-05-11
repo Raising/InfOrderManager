@@ -79,7 +79,7 @@ function cargaDataLogos_ENG(set)
 
  dataUnits.splice(0,1);
  var tropas = parsePerfiles(dataUnits);
- console.log(tropas);
+// console.log(tropas);
  return tropas;
 }
 
@@ -90,9 +90,9 @@ function cargaDataLogos_ENG(set)
 function parsePerfiles(data){
 	var object = {};
 	for (var i in data){
-		console.log(data[i]);
+	//	console.log(data[i]);
 		var tropa = data[i].split("|");
-		console.log(tropa);
+	//	console.log(tropa);
 		var Id = tropa[0];
 		var perfil = tropa[3].split("@");
 		object[Id]={name:tropa[1],raw:perfil,ordenes:[parseInt(perfil[4]),parseInt(perfil[5]),(parseInt(perfil[6])+parseInt(perfil[7])+parseInt(perfil[9])),0],};

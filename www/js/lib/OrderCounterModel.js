@@ -105,10 +105,11 @@ OCM.Unit = function(params,group){
 	this.img = params.img;
 	this.view = new OCV.unitView(this);
 	this.disabled = false;
-	console.log(this.Id);
-console.log(GLOBALS.unitData[this.Id].raw,GLOBALS.unitData[this.Id].ordenes);
-	
-	this.orderAvaiable = GLOBALS.unitData[this.Id].ordenes; //regular, irregular, impetuoso, teniente;
+	if (GLOBALS.unitData[this.Id]){
+		this.orderAvaiable = GLOBALS.unitData[this.Id].ordenes; //regular, irregular, impetuoso, teniente;
+	}else{
+		this.orderAvaiable =[1,0,0,0]; //regular, irregular, impetuoso, teniente;
+	}
 	this.orderUsed = [0,0,0,0]; //regular, irregular, impetuoso, teniente;
 
 
@@ -143,17 +144,21 @@ OCM.Group = function(params){
 	this.orders = {regular:0,irregular:0,impetuosa:0};
 
 	this.view = new  OCV.groupView(this);
+	this.headView = new OCV.groupHeadView(this);
 	this.estado = "load";
 
 	this.calcularOrdenes = function(){
 		group.orders = {regular:0,irregular:0,impetuosa:0};
 		for (var i in group.unitList){
+			if (group.unitList[i].disabled === false && group.unitList[i].orderAvaiable[0] == 1){
 				group.orders.regular += 1;
 			}
-			if (group.unitList[i].ordenes[1] == 1){
+			if (group.unitList[i].disabled === false && group.unitList[i].orderAvaiable[1] == 1){
 				group.orders.irregular += 1;
 			}
-
+			if (group.unitList[i].disabled === false && group.unitList[i].orderAvaiable[2] == 1){
+				group.orders.impetuosa += 1;
+			}
 			//TODO comprobar el tipo de ordenes que genera cada unidad en lugar de considerarlas todas regulares
 		}
 	}
@@ -162,6 +167,26 @@ OCM.Group = function(params){
 		 GLOBALS.estado.home();
 		}
 	}
+
+	this.getHeadView = function(){
+		return group.headView.getView();
+	}
+
+	this.nuevoTurno = function(){
+		group.calcularOrdenes();	
+		group.headView.refresh();
+		group.view.refresh();
+	}
+
+	this.reiniciarUnidades = function(){
+		group.unitList = [];
+		group.view.refresh();
+
+	}
+	this.refreshOrderHeader = function(){
+		group.headView.refresh();
+	}
+
 
 	this.addUnit = function(params){
 		if (group.estado === "load"){
@@ -221,3 +246,5 @@ OCM.Faction = function(params){
 		return faction.icon;
 	}
 }
+
+

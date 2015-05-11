@@ -31,19 +31,25 @@ var app = {
 
         var grupos = {grupo1:new OCM.Group(),grupo2:new OCM.Group(),grupo3:new OCM.Group()};
         GLOBALS.startGame = function(){
-             GLOBALS.gameStatus = "playing";
-            for (var i in grupos){
-                grupos[i].view.refresh();
+            GLOBALS.gameStatus = "playing";
+            for (var i in grupos){           
+                (function(i){ 
+                grupos[i].nuevoTurno();
+                $("#"+i+"tab").empty().append(grupos[i].getHeadView());
+                })(i);     
             };
             
         }
 
         GLOBALS.current.group = grupos.grupo1;
         for (var i in grupos){
-           (function(i){ $("#"+i).append(grupos[i].getView());
+           (function(i){ 
+           // $("#"+i+"tab").append(grupos[i].getHeadView());
+            $("#"+i).append(grupos[i].getView());
             $("#"+i+"tab").on("tap",function(){
                 GLOBALS.gruopSelection[i]();
-            });})(i);
+            });
+            })(i);
         }        
 
         GLOBALS.gruopSelection = {};
