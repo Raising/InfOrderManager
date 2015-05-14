@@ -949,7 +949,7 @@ window.$ === undefined && (window.$ = Zepto)
         if (e.isImmediatePropagationStopped()) return
         e.data = data
         var result = callback.apply(element, e._args == undefined ? [e] : [e].concat(e._args))
-        if (result === false) e.preventDefault(), e.stopPropagation()
+        if (result === false) console.log("previniendo default y propagacion"),e.preventDefault(), e.stopPropagation()
         return result
       }
       handler.i = set.length

@@ -117,7 +117,46 @@ OCM.Unit = function(params,group){
 
 
 	this.useOrder = function(tipo){
-		OCM.log.add("Orden"+tipo+" -> " +unit.nombre);
+		console.log("gastnado orden"+ tipo);
+		switch(tipo){
+			case "0"://regular
+				if (unit.group.orders.regular > 0){
+					unit.group.orders.regular--;
+					unit.orderUsed[tipo]++; 
+					unit.group.orders.impetuosa==0;
+				}
+				console.log("gastando orden regular");
+			break;
+			case "1":
+
+				if (unit.orderAvaiable[tipo] > unit.orderUsed[tipo]){
+					unit.group.orders.irregular--;
+					unit.orderUsed[tipo]++; 
+					unit.group.orders.impetuosa==0;
+				}
+			
+			break;
+			case "2":
+				if (unit.orderAvaiable[tipo] > unit.orderUsed[tipo]){
+					unit.group.orders.impetuosa--;
+					unit.orderUsed[tipo]++; 
+				}
+			break;
+			case "3":
+				if (unit.orderAvaiable[tipo] > unit.orderUsed[tipo]){
+					unit.group.orders.teniente--;
+					unit.orderUsed[tipo]++; 
+					unit.group.orders.impetuosa==0;
+				}
+			
+			break;
+		}
+
+		unit.group.refresh();
+
+
+
+		//OCM.log.add("Orden"+tipo+" -> " +unit.nombre);
 	}
 
 	this.toggleDisable = function(){
@@ -174,8 +213,7 @@ OCM.Group = function(params){
 
 	this.nuevoTurno = function(){
 		group.calcularOrdenes();	
-		group.headView.refresh();
-		group.view.refresh();
+		group.refresh();
 	}
 
 	this.reiniciarUnidades = function(){
@@ -187,6 +225,10 @@ OCM.Group = function(params){
 		group.headView.refresh();
 	}
 
+	this.refresh = function(){
+		group.headView.refresh();
+		group.view.refresh();
+	}
 
 	this.addUnit = function(params){
 		if (group.estado === "load"){

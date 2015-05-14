@@ -27,6 +27,7 @@
   }
 
   function cancelAll() {
+    console.log("cance All at touch.js");
     if (touchTimeout) clearTimeout(touchTimeout)
     if (tapTimeout) clearTimeout(tapTimeout)
     if (swipeTimeout) clearTimeout(swipeTimeout)
@@ -64,6 +65,7 @@
         }
       })
       .on('touchstart MSPointerDown pointerdown', function(e){
+        console.log("touCh.js pointer down");
         if((_isPointerType = isPointerEventType(e, 'down')) &&
           !isPrimaryTouch(e)) return
         firstTouch = _isPointerType ? e : e.touches[0]
@@ -101,6 +103,7 @@
         }
       })
       .on('touchend MSPointerUp pointerup', function(e){
+         console.log("touCh.js pointer up");
         if((_isPointerType = isPointerEventType(e, 'up')) &&
           !isPrimaryTouch(e)) return
         cancelLongTap()
@@ -127,6 +130,7 @@
               // trigger universal 'tap' with the option to cancelTouch()
               // (cancelTouch cancels processing of single vs double taps for faster 'tap' response)
               var event = $.Event('tap')
+              console.log(touch.el[0].innerText);
               event.cancelTouch = cancelAll
               touch.el.trigger(event)
 
@@ -146,6 +150,7 @@
               }
             }, 0)
           } else {
+            console.log("tap");
             touch = {}
           }
           deltaX = deltaY = 0

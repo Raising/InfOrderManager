@@ -71,48 +71,74 @@ OCV.unitView = function(model){
 	$("<div class='button impetuoso'></div>"),
 	$("<div class='button teniente'> </div>")];
 
-	this.unitIcon.on("tap",function(){
-		console.log("hola");
-		view.pop = new OCV.popUp({body:"hola"});
-		view.html.append(view.pop.getView());
-	});
+
+	this.orderSelector = new OCV.OrderSelector(model);
 
 	this.html
 		.append(this.unitIcon)
 		.append(this.unitName)
 		.append(this.actionSpace);
-	this.actionSpace
-		.append(this.removeUnit);
+	this.actionSpace;
+	//	.append(this.removeUnit);
 
-	this.unitDisable.on("tap",function(){
-		console.log("toggledisabled");
-		if (model.toggleDisable() === "disabled"){
-			view.html.addClass("disabled");
-		}else{
-			view.html.removeClass("disabled");
+
+	this.html.on("swipe",function(){
+		if (GLOBALS.gameStatus === "playing"){
+			console.log("toggledisabled");
+			if (model.toggleDisable() === "disabled"){
+				view.html.addClass("disabled");
+			}else{
+				view.html.removeClass("disabled");
+			}
 		}
+		else if (GLOBALS.gameStatus === "load"){
+			model.removeUnit();
+		}
+		return false;
 	});
 
-	this.removeUnit.on("tap",function(){
-		model.removeUnit();
-	})
+/*	this.removeUnit.on("tap",function(){
+		console.log("eliminando tropa");
+		
+		return false;
+	})*/
 
 	this.refreshActions= function(){
 		view.actionSpace.empty();
 		if (GLOBALS.gameStatus === "load"){
 			if (model.group.estado === "load"){
-				view.actionSpace.append(view.removeUnit);
+		//		view.actionSpace.append(view.removeUnit);
 			}else if(model.group.estado === "lock"){
 				view.actionSpace.append(view.editar);
 			}
 		}else if(GLOBALS.gameStatus === "playing"){
-			view.actionSpace.append(view.unitDisable);
+		//	view.actionSpace.append(view.unitDisable);
+			view.html.on("tap",function(){
+					if (model.disabled === false){
+					view.pop = new OCV.popUp({body:view.orderSelector.getView()});
+					view.html.parent().append(view.pop.getView());
+				}
+			});
 			if (model.disabled === false){
 				for (var i = model.orderAvaiable.length - 1; i >= 0; i--) {
-					if(model.orderAvaiable[i] == 1){
-						view.actionSpace.append(view.orders[i]);
+					if(i == 0 ){
+						if (model.group.orders.regular > 0){
+							view.actionSpace.append(view.orders[i]);
+						}
+					}else{
+						if(model.orderAvaiable[i] > model.orderUsed[i]){
+							if (i === 2){
+								if (model.group.orders.impetuosa > 0){
+									view.actionSpace.append(view.orders[i]);
+								}	
+							}else{
+								view.actionSpace.append(view.orders[i]);
+							}
+						}
 					}
+				
 				};
+				
 			}else{
 				//quitar disabled
 			}
@@ -127,16 +153,18 @@ OCV.unitView = function(model){
 }
 OCV.groupView = function(model){
 	var view = this;
-	this.html = $("<div class= 'groupView'><div>");
+	this.html = $("<div class= ''><div>");
 	this.addButton = $("<div class= 'buttonAdd'> + </div>");
 	this.lockList = $("<div class= 'buttonLock'> L </div>");
 	this.startGame = $("<div class= 'buttonStart'>Iniciar</div>");
 	this.nuevoTurno = $("<div class= 'buttonStart'>Turno</div>");
+	this.groupView = $("<div class= 'groupView'><div>");
 
 	this.html
 		.append(this.addButton)
 		.append(this.lockList)
-		.append(this.startGame);
+		.append(this.startGame)
+		.append(this.groupView);
 
 	this.addButton.on("tap",function(){
 		model.selectUnit();
@@ -174,20 +202,24 @@ OCV.groupView = function(model){
 
 	this.refresh = function(){
 		view.html.empty();
+		view.groupView.empty();
 		if (GLOBALS.gameStatus === "load"){
 			view.html
-			.append(this.addButton)
-			.append(this.lockList)
-			.append(this.startGame);
+			.append(view.addButton)
+			.append(view.lockList)
+			.append(view.startGame)
+			.append(view.groupView);
 		}
 		else{
 			view.html
-			.append(this.nuevoTurno);
+			.append(view.nuevoTurno)
+			.append(view.groupView);
 		}
 		for (var i in model.unitList){
 			model.unitList[i].view.refreshActions();
-			view.html.append(model.unitList[i].getView());
+			view.groupView.append(model.unitList[i].getView());
 		}
+
 	}
 	
 
@@ -215,6 +247,7 @@ OCV.groupHeadView = function(model){
 
 	this.refresh = function(){
 		for(var i in model.orders){
+			console.log(i);
 			view.orders[i].empty().append(model.orders[i]);
 		}
 	}
@@ -230,7 +263,7 @@ OCV.factionView = function(model){
 		var uSelector = new OCV.unitSelector(model.unitList[i]);
 		this.html.append(uSelector.getView());
 	}
-
+	this.html.append('<div id="log"class= "log"></div>');
 	this.getView = function(){
 		return view.html;
 	}
@@ -260,6 +293,59 @@ OCV.unitSelector = function(params){
 	}
 }
 
+ OCV.OrderSelector = function(model){
+ 	var selector = this;
+ 	this.html = $("<div class = 'orderSelector'></div>");
+ 	this.orders = [$("<div class='selector regular'><div>"),
+	$("<div class='selector irregular'> </div>"),
+	$("<div class='selector impetuoso'></div>"),
+	$("<div class='selector teniente'> </div>")];
+
+	for (var i in this.orders){
+		(function(i){
+			selector.html.append(selector.orders[i]);
+			selector.orders[i].on("tap",function(){
+				model.useOrder(i);
+				$(".popUp").remove();
+			});
+		})(i);
+	}
+
+
+
+
+
+
+
+	this.refresh = function(){
+		for (var i in this.orders){
+			if (i == 0){
+				if(model.group.orders.regular > 0){
+					selector.orders[i].removeClass("notallowed");
+				}else{
+					selector.orders[i].addClass("notallowed");
+				}
+			}
+			else{
+				if(model.orderAvaiable[i] > model.orderUsed[i]){
+					selector.orders[i].removeClass("notallowed");
+				}
+				else{
+					selector.orders[i].addClass("notallowed");
+				}
+			}
+			
+			this.html.append(this.orders[i]);
+		}
+	}
+	
+	this.getView = function(){
+		selector.refresh();
+		return selector.html;
+	}
+
+ }
+
 
 
 OCV.popUp = function (params){
@@ -279,21 +365,6 @@ OCV.popUp = function (params){
 			.append(this.closeIcon);
 	
 	this.hideBack.append(this.html);
-	
-	
-
-
-	//$("body").append(this.hideBack);
-	/*setTimeout(function() {
-		$("div").on("tap",function(){
-			console.log(this.innerHTML);
-		pop.body.append("");
-		return false;
-		//$("body > .total").remove();
-	});
-	}, 500);
-	
-*/
 
 	this.closeIcon.on("tap",function(){
 		pop.body.append("tap en closeicon");
